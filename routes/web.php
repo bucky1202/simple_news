@@ -45,34 +45,42 @@ Route::middleware('guest')->group(function () {
     Route::post('/auth/login',[AdminAuthController::class, 'store'])->name('auth.store');
 });
 
-//   User routes
-Route::middleware('auth','user')->group(function () {
-    Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
-    Route::get('/profile', [ProfileController::class,'index'])->name('profile.index');
-    Route::get('/profile/add-news', [ProfileController::class,'add_news'])->name('profile.add_news');
-    Route::post('/profile/add-news', [ProfileController::class,'store_news'])->name('profile.store_news');
-    Route::get('/profile/my-news', [ProfileController::class,'my_news'])->name('profile.my_news');
-    Route::get('/profile/change-password', [ProfileController::class,'show_change_password'])->name('profile.show_change_password');
-    Route::post('/profile/change-password', [ProfileController::class,'change_password'])->name('profile.change_password');
+Route::middleware('auth','back')->group(function () {
+
+    //   User routes
+    Route::middleware('user')->group(function () {
+        Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
+        Route::get('/profile', [ProfileController::class,'index'])->name('profile.index');
+        Route::get('/profile/add-news', [ProfileController::class,'add_news'])->name('profile.add_news');
+        Route::post('/profile/add-news', [ProfileController::class,'store_news'])->name('profile.store_news');
+        Route::get('/profile/my-news', [ProfileController::class,'my_news'])->name('profile.my_news');
+        Route::get('/profile/change-password', [ProfileController::class,'show_change_password'])->name('profile.show_change_password');
+        Route::post('/profile/change-password', [ProfileController::class,'change_password'])->name('profile.change_password');
+
+    });
+
+        //  Admin routes
+    Route::middleware('admin')->group(function () {
+        Route::get('/admin/dashboard',[AdminDashboardController::class,'index'])->name('admin.dashboard');
+        Route::post('admin/logout', [AdminDashboardController::class, 'logout'])->name('admin.auth.logout');
+        Route::resource('/admin/users', UserController::class);
+        Route::resource('/admin/editors', EditorController::class);
+        Route::resource('/admin/admins', AdminController::class);
+        Route::resource('/admin/news', AdminNewsController::class);
+    });
+
+
+          //  Editor routes
+    Route::middleware('editor')->group(function () {
+        Route::get('/editor/dashboard',[EditorDashboardController::class,'index'])->name('editor.dashboard');
+        Route::post('editor/logout', [EditorDashboardController::class, 'logout'])->name('editor.auth.logout');
+        Route::resource('/editor/news', EditorNewsController::class);
+    });
 
 });
 
-    //  Admin routes
-Route::middleware('auth','admin')->group(function () {
-     Route::get('/admin/dashboard',[AdminDashboardController::class,'index'])->name('admin.dashboard');
-     Route::post('admin/logout', [AdminDashboardController::class, 'logout'])->name('admin.auth.logout');
-     Route::resource('/admin/users', UserController::class);
-     Route::resource('/admin/editors', EditorController::class);
-     Route::resource('/admin/admins', AdminController::class);
-     Route::resource('/admin/news', AdminNewsController::class);
-});
 
-      //  Editor routes
-Route::middleware('auth','editor')->group(function () {
-     Route::get('/editor/dashboard',[EditorDashboardController::class,'index'])->name('editor.dashboard');
-     Route::post('editor/logout', [EditorDashboardController::class, 'logout'])->name('editor.auth.logout');
-     Route::resource('/editor/news', EditorNewsController::class);
-});
+
 
 
 

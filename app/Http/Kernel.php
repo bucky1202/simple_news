@@ -67,6 +67,7 @@ class Kernel extends HttpKernel
         'admin' => \App\Http\Middleware\AdminMiddleware::class,
         'user' => \App\Http\Middleware\UserMiddleware::class,
         'editor' => \App\Http\Middleware\EditorMiddleware::class,
+        'back' => \App\Http\Middleware\PreventBackHistory::class,
 
     ];
 }
