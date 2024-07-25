@@ -18,6 +18,7 @@
     <li>php artisan storage:link</li>
     <li>php artisan db:seed --class=RoleSeeder</li>
     <li>php artisan db:seed --class=UserSeeder</li>
+    <li>php artisan db:seed --class=NewsSeeder</li>
 </ol>
 <h4 align="center">Getting news api routes:</h4>
 <ul>
